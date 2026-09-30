@@ -1,0 +1,12 @@
+[
+  { "name": "invalid enum", "field": "origin", "value": "CUSTOMER_GUESSED" },
+  { "name": "invalid requirement type", "field": "type", "value": "SYSTEM" },
+  { "name": "missing source evidence", "field": "evidence", "value": [] },
+  { "name": "excerpt not found", "field": "evidence.0.excerpt", "value": "Invented source quote" },
+  { "name": "invalid source section", "field": "evidence.0.sectionId", "value": "SRC_999" },
+  { "name": "unsupported customer assertion", "field": "description", "value": "Existing CRM is HubSpot." },
+  { "name": "provider canonical ID", "field": "id", "value": "BR_99" },
+  { "name": "invented canonical offsets", "field": "evidence.0.start", "value": 42 },
+  { "name": "unexpected candidate reference", "field": "dependencyRefs", "value": [999] },
+  { "name": "wrong direct relation", "field": "evidence.0.relation", "value": "CONTEXT" }
+]

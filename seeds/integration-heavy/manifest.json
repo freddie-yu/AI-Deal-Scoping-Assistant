@@ -1,0 +1,182 @@
+{
+  "id": "integration-heavy",
+  "version": "1",
+  "phase": "SCOPE",
+  "title": "Salesforce order synchronization",
+  "description": "Recorded Phase 1 analysis with exact evidence and explicit uncertainty.",
+  "context": {
+    "customerName": "Example customer",
+    "opportunityName": "Salesforce order synchronization",
+    "analysisSectionIds": []
+  },
+  "input": {
+    "title": "Salesforce order synchronization",
+    "inputKind": "PASTED_MARKDOWN",
+    "text": "# Salesforce order synchronization\nReduce duplicate customer entry across sales and fulfilment.\nExisting CRM is Salesforce.\nSynchronize approved orders with the warehouse API.\nRetain failed synchronization records for operator review.\n"
+  },
+  "mockResponses": [
+    {
+      "operation": "analyze",
+      "variant": "scope",
+      "fixture": "mock-analysis.json"
+    },
+    {
+      "operation": "prd-scope",
+      "variant": "phase2-seed",
+      "fixture": "src/generators/mock-deliverables.ts"
+    },
+    {
+      "operation": "architecture",
+      "variant": "phase2-seed",
+      "fixture": "src/generators/mock-deliverables.ts"
+    },
+    {
+      "operation": "strategies",
+      "variant": "phase2-seed",
+      "fixture": "src/generators/mock-deliverables.ts"
+    },
+    {
+      "operation": "delivery",
+      "variant": "phase2-seed",
+      "fixture": "src/generators/mock-deliverables.ts"
+    }
+  ],
+  "semanticGoldenExpectations": {
+    "mustExtract": [
+      {
+        "selector": "payload.facts",
+        "description": "existingCRM",
+        "expectedValue": "Salesforce",
+        "relatedAliases": [
+          "existingCRM"
+        ]
+      },
+      {
+        "selector": "payload.facts",
+        "description": "workflow",
+        "expectedValue": "order synchronization",
+        "relatedAliases": [
+          "workflow"
+        ]
+      }
+    ],
+    "mustClassify": [
+      {
+        "selector": "payload.facts",
+        "description": "existingCRM",
+        "expectedValue": "Salesforce",
+        "origin": "CUSTOMER_STATED",
+        "relatedAliases": [
+          "existingCRM"
+        ]
+      },
+      {
+        "selector": "payload.facts",
+        "description": "workflow",
+        "expectedValue": "order synchronization",
+        "origin": "CUSTOMER_STATED",
+        "relatedAliases": [
+          "workflow"
+        ]
+      }
+    ],
+    "mustIdentifyMissing": [
+      {
+        "selector": "question",
+        "description": "apiReadiness",
+        "relatedAliases": [
+          "apiReadiness"
+        ]
+      }
+    ],
+    "mustNotInvent": [
+      {
+        "selector": "measures.concurrency",
+        "description": "concurrency",
+        "relatedAliases": [
+          "concurrency"
+        ]
+      },
+      {
+        "selector": "payload.facts",
+        "description": "existingCRM",
+        "expectedValue": "HubSpot",
+        "relatedAliases": [
+          "existingCRM"
+        ]
+      }
+    ],
+    "expectedCapabilities": [
+      {
+        "selector": "payload.requirementIds",
+        "description": "Capability grounded in source workflow",
+        "expectedValue": "Existing CRM is Salesforce.",
+        "relatedAliases": [
+          "Existing CRM is Salesforce."
+        ]
+      },
+      {
+        "selector": "payload.requirementIds",
+        "description": "Capability grounded in source workflow",
+        "expectedValue": "Synchronize approved orders",
+        "relatedAliases": [
+          "Synchronize approved orders"
+        ]
+      }
+    ],
+    "expectedRecommendationConstraints": [
+      {
+        "selector": "payload.catalogServiceKey",
+        "description": "Seed-supported AWS recommendation",
+        "expectedValue": "aws:sqs",
+        "relatedAliases": [
+          "Existing CRM is Salesforce.",
+          "Synchronize approved orders"
+        ]
+      },
+      {
+        "selector": "payload.catalogServiceKey",
+        "description": "Seed-supported AWS recommendation",
+        "expectedValue": "aws:secrets-manager",
+        "relatedAliases": [
+          "Existing CRM is Salesforce.",
+          "Synchronize approved orders"
+        ]
+      }
+    ],
+    "emptyReasons": {}
+  },
+  "phase2Expectations": {
+    "mustHaveCapabilities": [
+      "Existing CRM is Salesforce.",
+      "Synchronize approved orders"
+    ],
+    "mustCoverRequirements": [
+      "Existing CRM is Salesforce.",
+      "Synchronize approved orders"
+    ],
+    "mustNotAddUnsupportedCapability": true,
+    "expectedArchitecture": [
+      "aws:sqs",
+      "aws:secrets-manager"
+    ],
+    "forbiddenArchitecture": [],
+    "expectedIntegrations": [
+      {
+        "name": "Salesforce",
+        "sourceText": "Existing CRM is Salesforce."
+      },
+      {
+        "name": "Warehouse API",
+        "sourceText": "Synchronize approved orders"
+      }
+    ],
+    "expectedAIUseCases": [],
+    "forbiddenAIUseCases": [
+      "ALL"
+    ],
+    "expectedRecommendationConstraints": [
+      "NO_UNGROUNDED_RECOMMENDATIONS"
+    ]
+  }
+}

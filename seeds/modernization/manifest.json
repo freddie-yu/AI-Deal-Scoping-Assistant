@@ -1,0 +1,154 @@
+{
+  "id": "modernization",
+  "version": "1",
+  "phase": "SCOPE",
+  "title": "Atlas modernization",
+  "description": "Recorded Phase 1 analysis with exact evidence and explicit uncertainty.",
+  "context": {
+    "customerName": "Example customer",
+    "opportunityName": "Atlas modernization",
+    "analysisSectionIds": []
+  },
+  "input": {
+    "title": "Atlas modernization",
+    "inputKind": "PASTED_MARKDOWN",
+    "text": "# Atlas modernization\nModernize Atlas to reduce manual order handling.\nOperations staff need to create and track orders.\nThe database must remain PostgreSQL compatible.\nSupport 5,000 registered users.\nEncrypt customer records at rest.\n"
+  },
+  "mockResponses": [
+    {
+      "operation": "analyze",
+      "variant": "scope",
+      "fixture": "mock-analysis.json"
+    },
+    {
+      "operation": "prd-scope",
+      "variant": "phase2-seed",
+      "fixture": "src/generators/mock-deliverables.ts"
+    },
+    {
+      "operation": "architecture",
+      "variant": "phase2-seed",
+      "fixture": "src/generators/mock-deliverables.ts"
+    },
+    {
+      "operation": "strategies",
+      "variant": "phase2-seed",
+      "fixture": "src/generators/mock-deliverables.ts"
+    },
+    {
+      "operation": "delivery",
+      "variant": "phase2-seed",
+      "fixture": "src/generators/mock-deliverables.ts"
+    }
+  ],
+  "semanticGoldenExpectations": {
+    "mustExtract": [
+      {
+        "selector": "payload.facts",
+        "description": "existingApplication",
+        "expectedValue": "Atlas",
+        "relatedAliases": [
+          "existingApplication"
+        ]
+      },
+      {
+        "selector": "payload.facts",
+        "description": "workflow",
+        "expectedValue": "order tracking",
+        "relatedAliases": [
+          "workflow"
+        ]
+      }
+    ],
+    "mustClassify": [
+      {
+        "selector": "payload.facts",
+        "description": "existingApplication",
+        "expectedValue": "Atlas",
+        "origin": "CUSTOMER_STATED",
+        "relatedAliases": [
+          "existingApplication"
+        ]
+      },
+      {
+        "selector": "payload.facts",
+        "description": "workflow",
+        "expectedValue": "order tracking",
+        "origin": "CUSTOMER_STATED",
+        "relatedAliases": [
+          "workflow"
+        ]
+      }
+    ],
+    "mustIdentifyMissing": [
+      {
+        "selector": "measures.concurrency",
+        "description": "concurrency",
+        "relatedAliases": [
+          "concurrency"
+        ]
+      }
+    ],
+    "mustNotInvent": [
+      {
+        "selector": "measures.concurrency",
+        "description": "concurrency",
+        "relatedAliases": [
+          "concurrency"
+        ]
+      }
+    ],
+    "expectedCapabilities": [
+      {
+        "selector": "payload.requirementIds",
+        "description": "Capability grounded in source workflow",
+        "expectedValue": "create and track orders",
+        "relatedAliases": [
+          "create and track orders"
+        ]
+      }
+    ],
+    "expectedRecommendationConstraints": [
+      {
+        "selector": "payload.catalogServiceKey",
+        "description": "Seed-supported AWS recommendation",
+        "expectedValue": "aws:rds-postgresql",
+        "relatedAliases": [
+          "create and track orders"
+        ]
+      },
+      {
+        "selector": "payload.catalogServiceKey",
+        "description": "Seed-supported AWS recommendation",
+        "expectedValue": "aws:kms",
+        "relatedAliases": [
+          "create and track orders"
+        ]
+      }
+    ],
+    "emptyReasons": {}
+  },
+  "phase2Expectations": {
+    "mustHaveCapabilities": [
+      "create and track orders"
+    ],
+    "mustCoverRequirements": [
+      "create and track orders"
+    ],
+    "mustNotAddUnsupportedCapability": true,
+    "expectedArchitecture": [
+      "aws:rds-postgresql",
+      "aws:kms"
+    ],
+    "forbiddenArchitecture": [],
+    "expectedIntegrations": [],
+    "expectedAIUseCases": [],
+    "forbiddenAIUseCases": [
+      "ALL"
+    ],
+    "expectedRecommendationConstraints": [
+      "POSTGRESQL_COMPATIBLE",
+      "NO_UNGROUNDED_RECOMMENDATIONS"
+    ]
+  }
+}

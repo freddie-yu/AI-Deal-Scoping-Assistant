@@ -1,0 +1,144 @@
+{
+  "id": "missing-information",
+  "version": "1",
+  "phase": "SCOPE",
+  "title": "Discovery with open gaps",
+  "description": "Recorded Phase 1 analysis with exact evidence and explicit uncertainty.",
+  "context": {
+    "customerName": "Example customer",
+    "opportunityName": "Discovery with open gaps",
+    "analysisSectionIds": []
+  },
+  "input": {
+    "title": "Discovery with open gaps",
+    "inputKind": "PASTED_MARKDOWN",
+    "text": "# Discovery with open gaps\nBuild a customer self-service portal.\nCustomers need to view invoices from our billing API.\nThe portal must protect customer information.\n"
+  },
+  "mockResponses": [
+    {
+      "operation": "analyze",
+      "variant": "scope",
+      "fixture": "mock-analysis.json"
+    },
+    {
+      "operation": "prd-scope",
+      "variant": "phase2-seed",
+      "fixture": "src/generators/mock-deliverables.ts"
+    },
+    {
+      "operation": "architecture",
+      "variant": "phase2-seed",
+      "fixture": "src/generators/mock-deliverables.ts"
+    },
+    {
+      "operation": "strategies",
+      "variant": "phase2-seed",
+      "fixture": "src/generators/mock-deliverables.ts"
+    },
+    {
+      "operation": "delivery",
+      "variant": "phase2-seed",
+      "fixture": "src/generators/mock-deliverables.ts"
+    }
+  ],
+  "semanticGoldenExpectations": {
+    "mustExtract": [
+      {
+        "selector": "payload.facts",
+        "description": "workflow",
+        "expectedValue": "customer self-service",
+        "relatedAliases": [
+          "workflow"
+        ]
+      }
+    ],
+    "mustClassify": [
+      {
+        "selector": "payload.facts",
+        "description": "workflow",
+        "expectedValue": "customer self-service",
+        "origin": "CUSTOMER_STATED",
+        "relatedAliases": [
+          "workflow"
+        ]
+      }
+    ],
+    "mustIdentifyMissing": [
+      {
+        "selector": "measures.concurrency",
+        "description": "concurrency",
+        "relatedAliases": [
+          "concurrency"
+        ]
+      }
+    ],
+    "mustNotInvent": [
+      {
+        "selector": "measures.concurrency",
+        "description": "concurrency",
+        "relatedAliases": [
+          "concurrency"
+        ]
+      }
+    ],
+    "expectedCapabilities": [
+      {
+        "selector": "payload.requirementIds",
+        "description": "Capability grounded in source workflow",
+        "expectedValue": "customer self-service",
+        "relatedAliases": [
+          "customer self-service"
+        ]
+      },
+      {
+        "selector": "payload.requirementIds",
+        "description": "Capability grounded in source workflow",
+        "expectedValue": "view invoices",
+        "relatedAliases": [
+          "view invoices"
+        ]
+      }
+    ],
+    "expectedRecommendationConstraints": [
+      {
+        "selector": "payload.catalogServiceKey",
+        "description": "Seed-supported AWS recommendation",
+        "expectedValue": "aws:api-gateway",
+        "relatedAliases": [
+          "customer self-service",
+          "view invoices"
+        ]
+      }
+    ],
+    "emptyReasons": {}
+  },
+  "phase2Expectations": {
+    "mustHaveCapabilities": [
+      "customer self-service",
+      "view invoices"
+    ],
+    "mustCoverRequirements": [
+      "customer self-service",
+      "view invoices"
+    ],
+    "mustNotAddUnsupportedCapability": true,
+    "expectedArchitecture": [
+      "aws:api-gateway"
+    ],
+    "forbiddenArchitecture": [],
+    "expectedIntegrations": [
+      {
+        "name": "Billing API",
+        "sourceText": "view invoices"
+      }
+    ],
+    "expectedAIUseCases": [],
+    "forbiddenAIUseCases": [
+      "ALL"
+    ],
+    "expectedRecommendationConstraints": [
+      "NO_INVENTED_SCALE",
+      "NO_UNGROUNDED_RECOMMENDATIONS"
+    ]
+  }
+}

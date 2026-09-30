@@ -1,0 +1,235 @@
+{
+  "fingerprint": "2c68f3a3940c97691ad9fcb5de64edc7349e45c9838d9d412daf68a12e291a56",
+  "analysis": {
+    "kind": "Analysis",
+    "requirements": [
+      {
+        "type": "BR",
+        "description": "Help support agents draft replies from approved knowledge articles.",
+        "priority": "HIGH",
+        "origin": "CUSTOMER_STATED",
+        "basis": "Exact customer statement.",
+        "evidence": [
+          {
+            "sectionOrdinal": 1,
+            "excerpt": "Help support agents draft replies from approved knowledge articles.",
+            "relation": "DIRECT"
+          }
+        ],
+        "dependencyRefs": [],
+        "assumptionRefs": [],
+        "questionRefs": []
+      },
+      {
+        "type": "FR",
+        "description": "A support agent must approve every reply before it is sent.",
+        "priority": "MEDIUM",
+        "origin": "CUSTOMER_STATED",
+        "basis": "Exact customer statement.",
+        "evidence": [
+          {
+            "sectionOrdinal": 2,
+            "excerpt": "A support agent must approve every reply before it is sent.",
+            "relation": "DIRECT"
+          }
+        ],
+        "dependencyRefs": [],
+        "assumptionRefs": [],
+        "questionRefs": []
+      },
+      {
+        "type": "SEC",
+        "description": "Customer identifiers must be removed from AI input.",
+        "priority": "MEDIUM",
+        "origin": "CUSTOMER_STATED",
+        "basis": "Exact customer statement.",
+        "evidence": [
+          {
+            "sectionOrdinal": 3,
+            "excerpt": "Customer identifiers must be removed from AI input.",
+            "relation": "DIRECT"
+          }
+        ],
+        "dependencyRefs": [],
+        "assumptionRefs": [],
+        "questionRefs": []
+      },
+      {
+        "type": "DATA",
+        "description": "Keep an audit trail of approved and rejected drafts.",
+        "priority": "MEDIUM",
+        "origin": "CUSTOMER_STATED",
+        "basis": "Exact customer statement.",
+        "evidence": [
+          {
+            "sectionOrdinal": 4,
+            "excerpt": "Keep an audit trail of approved and rejected drafts.",
+            "relation": "DIRECT"
+          }
+        ],
+        "dependencyRefs": [],
+        "assumptionRefs": [],
+        "questionRefs": []
+      },
+      {
+        "type": "FR",
+        "description": "Collect reviewer feedback to assess draft usefulness.",
+        "priority": "MEDIUM",
+        "origin": "AI_INFERRED",
+        "basis": "Interpretation of the Support reply assistant objective; the proposed detail was not explicitly stated.",
+        "evidence": [
+          {
+            "sectionOrdinal": 1,
+            "excerpt": "Help support agents draft replies from approved knowledge articles.",
+            "relation": "CONTEXT"
+          }
+        ],
+        "dependencyRefs": [
+          0
+        ],
+        "assumptionRefs": [
+          0
+        ],
+        "questionRefs": [
+          0
+        ]
+      }
+    ],
+    "assumptions": [
+      {
+        "statement": "Support leads can supply representative evaluation examples.",
+        "basis": "Evaluation examples and their ownership were not stated; this remains a planning assumption.",
+        "sources": [
+          {
+            "sectionOrdinal": 1,
+            "excerpt": "Help support agents draft replies from approved knowledge articles.",
+            "relation": "CONTEXT"
+          }
+        ],
+        "requirementRefs": [
+          4
+        ],
+        "validation": "PROVISIONAL"
+      }
+    ],
+    "questions": [
+      {
+        "question": "How many approved knowledge articles are available and who owns them?",
+        "criticality": "HIGH",
+        "subject": "dataVolume",
+        "basis": "dataVolume was not stated in the customer input.",
+        "sources": [
+          {
+            "sectionOrdinal": 1,
+            "excerpt": "Help support agents draft replies from approved knowledge articles.",
+            "relation": "CONTEXT"
+          }
+        ],
+        "requirementRefs": [
+          4
+        ],
+        "assumptionRefs": [
+          0
+        ]
+      }
+    ],
+    "context": [
+      {
+        "topic": "OBJECTIVES",
+        "text": "Help support agents draft replies from approved knowledge articles.",
+        "origin": "CUSTOMER_STATED",
+        "sources": [
+          {
+            "sectionOrdinal": 1,
+            "excerpt": "Help support agents draft replies from approved knowledge articles.",
+            "relation": "DIRECT"
+          }
+        ],
+        "requirementRefs": [
+          0
+        ],
+        "facts": []
+      },
+      {
+        "topic": "PERSONAS",
+        "text": "Help support agents draft replies from approved knowledge articles.",
+        "origin": "CUSTOMER_STATED",
+        "sources": [
+          {
+            "sectionOrdinal": 1,
+            "excerpt": "Help support agents draft replies from approved knowledge articles.",
+            "relation": "DIRECT"
+          }
+        ],
+        "requirementRefs": [
+          0
+        ],
+        "facts": [
+          {
+            "subject": "aiObjective",
+            "value": "support reply drafting",
+            "requirementRefs": [
+              0
+            ]
+          }
+        ]
+      },
+      {
+        "topic": "PERSONAS",
+        "text": "A support agent must approve every reply before it is sent.",
+        "origin": "CUSTOMER_STATED",
+        "sources": [
+          {
+            "sectionOrdinal": 2,
+            "excerpt": "A support agent must approve every reply before it is sent.",
+            "relation": "DIRECT"
+          }
+        ],
+        "requirementRefs": [
+          1
+        ],
+        "facts": [
+          {
+            "subject": "workflow",
+            "value": "human reply approval",
+            "requirementRefs": [
+              1
+            ]
+          }
+        ]
+      },
+      {
+        "topic": "MISSING_INFORMATION",
+        "text": "dataVolume was not stated in the customer input.",
+        "origin": "AI_INFERRED",
+        "sources": [
+          {
+            "sectionOrdinal": 1,
+            "excerpt": "Help support agents draft replies from approved knowledge articles.",
+            "relation": "CONTEXT"
+          }
+        ],
+        "requirementRefs": [
+          4
+        ],
+        "facts": []
+      },
+      {
+        "topic": "RISKS",
+        "text": "Unresolved dataVolume may change scope; seek customer validation.",
+        "origin": "AI_INFERRED",
+        "sources": [
+          {
+            "sectionOrdinal": 1,
+            "excerpt": "Help support agents draft replies from approved knowledge articles.",
+            "relation": "CONTEXT"
+          }
+        ],
+        "requirementRefs": [
+          4
+        ],
+        "facts": []
+      }
+    ]
+  }
+}

@@ -1,0 +1,159 @@
+{
+  "id": "ai-enabled",
+  "version": "1",
+  "phase": "SCOPE",
+  "title": "Support reply assistant",
+  "description": "Recorded Phase 1 analysis with exact evidence and explicit uncertainty.",
+  "context": {
+    "customerName": "Example customer",
+    "opportunityName": "Support reply assistant",
+    "analysisSectionIds": []
+  },
+  "input": {
+    "title": "Support reply assistant",
+    "inputKind": "PASTED_MARKDOWN",
+    "text": "# Support reply assistant\nHelp support agents draft replies from approved knowledge articles.\nA support agent must approve every reply before it is sent.\nCustomer identifiers must be removed from AI input.\nKeep an audit trail of approved and rejected drafts.\n"
+  },
+  "mockResponses": [
+    {
+      "operation": "analyze",
+      "variant": "scope",
+      "fixture": "mock-analysis.json"
+    },
+    {
+      "operation": "prd-scope",
+      "variant": "phase2-seed",
+      "fixture": "src/generators/mock-deliverables.ts"
+    },
+    {
+      "operation": "architecture",
+      "variant": "phase2-seed",
+      "fixture": "src/generators/mock-deliverables.ts"
+    },
+    {
+      "operation": "strategies",
+      "variant": "phase2-seed",
+      "fixture": "src/generators/mock-deliverables.ts"
+    },
+    {
+      "operation": "delivery",
+      "variant": "phase2-seed",
+      "fixture": "src/generators/mock-deliverables.ts"
+    }
+  ],
+  "semanticGoldenExpectations": {
+    "mustExtract": [
+      {
+        "selector": "payload.facts",
+        "description": "aiObjective",
+        "expectedValue": "support reply drafting",
+        "relatedAliases": [
+          "aiObjective"
+        ]
+      },
+      {
+        "selector": "payload.facts",
+        "description": "workflow",
+        "expectedValue": "human reply approval",
+        "relatedAliases": [
+          "workflow"
+        ]
+      }
+    ],
+    "mustClassify": [
+      {
+        "selector": "payload.facts",
+        "description": "aiObjective",
+        "expectedValue": "support reply drafting",
+        "origin": "CUSTOMER_STATED",
+        "relatedAliases": [
+          "aiObjective"
+        ]
+      },
+      {
+        "selector": "payload.facts",
+        "description": "workflow",
+        "expectedValue": "human reply approval",
+        "origin": "CUSTOMER_STATED",
+        "relatedAliases": [
+          "workflow"
+        ]
+      }
+    ],
+    "mustIdentifyMissing": [
+      {
+        "selector": "question",
+        "description": "dataVolume",
+        "relatedAliases": [
+          "dataVolume"
+        ]
+      }
+    ],
+    "mustNotInvent": [
+      {
+        "selector": "measures.concurrency",
+        "description": "concurrency",
+        "relatedAliases": [
+          "concurrency"
+        ]
+      }
+    ],
+    "expectedCapabilities": [
+      {
+        "selector": "payload.requirementIds",
+        "description": "Capability grounded in source workflow",
+        "expectedValue": "draft replies",
+        "relatedAliases": [
+          "draft replies"
+        ]
+      },
+      {
+        "selector": "payload.requirementIds",
+        "description": "Capability grounded in source workflow",
+        "expectedValue": "approve every reply",
+        "relatedAliases": [
+          "approve every reply"
+        ]
+      }
+    ],
+    "expectedRecommendationConstraints": [
+      {
+        "selector": "payload.catalogServiceKey",
+        "description": "Seed-supported AWS recommendation",
+        "expectedValue": "aws:bedrock",
+        "relatedAliases": [
+          "draft replies",
+          "approve every reply"
+        ]
+      }
+    ],
+    "emptyReasons": {}
+  },
+  "phase2Expectations": {
+    "mustHaveCapabilities": [
+      "draft replies",
+      "approve every reply"
+    ],
+    "mustCoverRequirements": [
+      "draft replies",
+      "approve every reply"
+    ],
+    "mustNotAddUnsupportedCapability": true,
+    "expectedArchitecture": [
+      "aws:bedrock"
+    ],
+    "forbiddenArchitecture": [],
+    "expectedIntegrations": [],
+    "expectedAIUseCases": [
+      {
+        "sourceText": "draft replies",
+        "humanApproval": true
+      }
+    ],
+    "forbiddenAIUseCases": [],
+    "expectedRecommendationConstraints": [
+      "HUMAN_APPROVAL",
+      "NO_UNGROUNDED_RECOMMENDATIONS"
+    ]
+  }
+}

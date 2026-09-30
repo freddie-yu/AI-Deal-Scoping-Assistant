@@ -1,0 +1,260 @@
+{
+  "fingerprint": "6bcb899903d3ac7e007d51103c63cd9b6fbad785cc1fd0c8a105370e2aff5073",
+  "analysis": {
+    "kind": "Analysis",
+    "requirements": [
+      {
+        "type": "BR",
+        "description": "Build a customer self-service portal.",
+        "priority": "HIGH",
+        "origin": "CUSTOMER_STATED",
+        "basis": "Exact customer statement.",
+        "evidence": [
+          {
+            "sectionOrdinal": 1,
+            "excerpt": "Build a customer self-service portal.",
+            "relation": "DIRECT"
+          }
+        ],
+        "dependencyRefs": [],
+        "assumptionRefs": [],
+        "questionRefs": []
+      },
+      {
+        "type": "INT",
+        "description": "Customers need to view invoices from our billing API.",
+        "priority": "MEDIUM",
+        "origin": "CUSTOMER_STATED",
+        "basis": "Exact customer statement.",
+        "evidence": [
+          {
+            "sectionOrdinal": 2,
+            "excerpt": "Customers need to view invoices from our billing API.",
+            "relation": "DIRECT"
+          }
+        ],
+        "dependencyRefs": [],
+        "assumptionRefs": [],
+        "questionRefs": []
+      },
+      {
+        "type": "SEC",
+        "description": "The portal must protect customer information.",
+        "priority": "MEDIUM",
+        "origin": "CUSTOMER_STATED",
+        "basis": "Exact customer statement.",
+        "evidence": [
+          {
+            "sectionOrdinal": 3,
+            "excerpt": "The portal must protect customer information.",
+            "relation": "DIRECT"
+          }
+        ],
+        "dependencyRefs": [],
+        "assumptionRefs": [],
+        "questionRefs": []
+      },
+      {
+        "type": "NFR",
+        "description": "Confirm portal capacity before selecting an implementation.",
+        "priority": "MEDIUM",
+        "origin": "AI_INFERRED",
+        "basis": "Interpretation of the Discovery with open gaps objective; the proposed detail was not explicitly stated.",
+        "evidence": [
+          {
+            "sectionOrdinal": 1,
+            "excerpt": "Build a customer self-service portal.",
+            "relation": "CONTEXT"
+          }
+        ],
+        "dependencyRefs": [
+          0
+        ],
+        "assumptionRefs": [
+          0
+        ],
+        "questionRefs": [
+          0,
+          1,
+          2
+        ],
+        "measures": {
+          "concurrency": {
+            "state": "UNRESOLVED",
+            "reason": "Peak concurrency was not stated.",
+            "questionRefs": [
+              0
+            ]
+          }
+        }
+      },
+      {
+        "type": "FR",
+        "description": "Include a discovery review with the customer representative.",
+        "priority": "LOW",
+        "origin": "ASSUMED",
+        "basis": "Discovery availability was not stated; no capacity, rate or API readiness is assumed.",
+        "evidence": [
+          {
+            "sectionOrdinal": 1,
+            "excerpt": "Build a customer self-service portal.",
+            "relation": "CONTEXT"
+          }
+        ],
+        "dependencyRefs": [
+          0
+        ],
+        "assumptionRefs": [
+          0
+        ],
+        "questionRefs": []
+      }
+    ],
+    "assumptions": [
+      {
+        "statement": "A customer representative can attend discovery to resolve open facts.",
+        "basis": "Discovery availability was not stated; no capacity, rate or API readiness is assumed.",
+        "sources": [
+          {
+            "sectionOrdinal": 1,
+            "excerpt": "Build a customer self-service portal.",
+            "relation": "CONTEXT"
+          }
+        ],
+        "requirementRefs": [
+          3
+        ],
+        "validation": "PROVISIONAL"
+      }
+    ],
+    "questions": [
+      {
+        "question": "What peak concurrency must the portal support?",
+        "criticality": "HIGH",
+        "subject": "concurrency",
+        "basis": "concurrency was not stated in the customer input.",
+        "sources": [
+          {
+            "sectionOrdinal": 1,
+            "excerpt": "Build a customer self-service portal.",
+            "relation": "CONTEXT"
+          }
+        ],
+        "requirementRefs": [
+          3
+        ],
+        "assumptionRefs": [
+          0
+        ]
+      },
+      {
+        "question": "Is the billing API documented and accessible?",
+        "criticality": "HIGH",
+        "subject": "apiReadiness",
+        "basis": "apiReadiness was not stated; no value is assumed.",
+        "sources": [
+          {
+            "sectionOrdinal": 2,
+            "excerpt": "Customers need to view invoices from our billing API.",
+            "relation": "CONTEXT"
+          }
+        ],
+        "requirementRefs": [
+          3
+        ],
+        "assumptionRefs": []
+      },
+      {
+        "question": "What role rates and currency are approved for planning?",
+        "criticality": "HIGH",
+        "subject": "rate",
+        "basis": "rate was not stated; no value is assumed.",
+        "sources": [
+          {
+            "sectionOrdinal": 2,
+            "excerpt": "Customers need to view invoices from our billing API.",
+            "relation": "CONTEXT"
+          }
+        ],
+        "requirementRefs": [
+          3
+        ],
+        "assumptionRefs": []
+      }
+    ],
+    "context": [
+      {
+        "topic": "OBJECTIVES",
+        "text": "Build a customer self-service portal.",
+        "origin": "CUSTOMER_STATED",
+        "sources": [
+          {
+            "sectionOrdinal": 1,
+            "excerpt": "Build a customer self-service portal.",
+            "relation": "DIRECT"
+          }
+        ],
+        "requirementRefs": [
+          0
+        ],
+        "facts": []
+      },
+      {
+        "topic": "PERSONAS",
+        "text": "Build a customer self-service portal.",
+        "origin": "CUSTOMER_STATED",
+        "sources": [
+          {
+            "sectionOrdinal": 1,
+            "excerpt": "Build a customer self-service portal.",
+            "relation": "DIRECT"
+          }
+        ],
+        "requirementRefs": [
+          0
+        ],
+        "facts": [
+          {
+            "subject": "workflow",
+            "value": "customer self-service",
+            "requirementRefs": [
+              0
+            ]
+          }
+        ]
+      },
+      {
+        "topic": "MISSING_INFORMATION",
+        "text": "concurrency was not stated in the customer input. apiReadiness was not stated; no value is assumed. rate was not stated; no value is assumed.",
+        "origin": "AI_INFERRED",
+        "sources": [
+          {
+            "sectionOrdinal": 1,
+            "excerpt": "Build a customer self-service portal.",
+            "relation": "CONTEXT"
+          }
+        ],
+        "requirementRefs": [
+          3
+        ],
+        "facts": []
+      },
+      {
+        "topic": "RISKS",
+        "text": "Unresolved concurrency may change scope; seek customer validation.",
+        "origin": "AI_INFERRED",
+        "sources": [
+          {
+            "sectionOrdinal": 1,
+            "excerpt": "Build a customer self-service portal.",
+            "relation": "CONTEXT"
+          }
+        ],
+        "requirementRefs": [
+          3
+        ],
+        "facts": []
+      }
+    ]
+  }
+}

@@ -1,0 +1,281 @@
+{
+  "fingerprint": "08021626e3ec100ba07d0f547634b2626b3fa9020e2d054bef9ff708c4ad5c67",
+  "analysis": {
+    "kind": "Analysis",
+    "requirements": [
+      {
+        "type": "BR",
+        "description": "Modernize Atlas to reduce manual order handling.",
+        "priority": "HIGH",
+        "origin": "CUSTOMER_STATED",
+        "basis": "Exact customer statement.",
+        "evidence": [
+          {
+            "sectionOrdinal": 1,
+            "excerpt": "Modernize Atlas to reduce manual order handling.",
+            "relation": "DIRECT"
+          }
+        ],
+        "dependencyRefs": [],
+        "assumptionRefs": [],
+        "questionRefs": []
+      },
+      {
+        "type": "FR",
+        "description": "Operations staff need to create and track orders.",
+        "priority": "MEDIUM",
+        "origin": "CUSTOMER_STATED",
+        "basis": "Exact customer statement.",
+        "evidence": [
+          {
+            "sectionOrdinal": 2,
+            "excerpt": "Operations staff need to create and track orders.",
+            "relation": "DIRECT"
+          }
+        ],
+        "dependencyRefs": [],
+        "assumptionRefs": [],
+        "questionRefs": []
+      },
+      {
+        "type": "DATA",
+        "description": "The database must remain PostgreSQL compatible.",
+        "priority": "MEDIUM",
+        "origin": "CUSTOMER_STATED",
+        "basis": "Exact customer statement.",
+        "evidence": [
+          {
+            "sectionOrdinal": 3,
+            "excerpt": "The database must remain PostgreSQL compatible.",
+            "relation": "DIRECT"
+          }
+        ],
+        "dependencyRefs": [],
+        "assumptionRefs": [],
+        "questionRefs": [],
+        "technologyConstraints": [
+          {
+            "key": "postgresql",
+            "target": "DATABASE",
+            "strength": "MUST",
+            "kind": "DATABASE_COMPATIBILITY",
+            "values": [
+              "postgresql"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "NFR",
+        "description": "Support 5,000 registered users.",
+        "priority": "MEDIUM",
+        "origin": "CUSTOMER_STATED",
+        "basis": "Exact customer statement.",
+        "evidence": [
+          {
+            "sectionOrdinal": 4,
+            "excerpt": "Support 5,000 registered users.",
+            "relation": "DIRECT"
+          }
+        ],
+        "dependencyRefs": [],
+        "assumptionRefs": [],
+        "questionRefs": [],
+        "measures": {
+          "expectedUsers": {
+            "state": "KNOWN",
+            "value": {
+              "value": 5000,
+              "unit": "registered users"
+            }
+          }
+        }
+      },
+      {
+        "type": "SEC",
+        "description": "Encrypt customer records at rest.",
+        "priority": "MEDIUM",
+        "origin": "CUSTOMER_STATED",
+        "basis": "Exact customer statement.",
+        "evidence": [
+          {
+            "sectionOrdinal": 5,
+            "excerpt": "Encrypt customer records at rest.",
+            "relation": "DIRECT"
+          }
+        ],
+        "dependencyRefs": [],
+        "assumptionRefs": [],
+        "questionRefs": []
+      },
+      {
+        "type": "NFR",
+        "description": "Validate imported orders before they enter the new workflow.",
+        "priority": "MEDIUM",
+        "origin": "AI_INFERRED",
+        "basis": "Interpretation of the Atlas modernization objective; the proposed detail was not explicitly stated.",
+        "evidence": [
+          {
+            "sectionOrdinal": 1,
+            "excerpt": "Modernize Atlas to reduce manual order handling.",
+            "relation": "CONTEXT"
+          }
+        ],
+        "dependencyRefs": [
+          0
+        ],
+        "assumptionRefs": [
+          0
+        ],
+        "questionRefs": [
+          0
+        ],
+        "measures": {
+          "concurrency": {
+            "state": "UNRESOLVED",
+            "reason": "Peak concurrency was not stated.",
+            "questionRefs": [
+              0
+            ]
+          }
+        }
+      }
+    ],
+    "assumptions": [
+      {
+        "statement": "Operations staff can review a sample migration before rollout.",
+        "basis": "Migration acceptance ownership was not stated; this is provisional for planning.",
+        "sources": [
+          {
+            "sectionOrdinal": 1,
+            "excerpt": "Modernize Atlas to reduce manual order handling.",
+            "relation": "CONTEXT"
+          }
+        ],
+        "requirementRefs": [
+          5
+        ],
+        "validation": "PROVISIONAL"
+      }
+    ],
+    "questions": [
+      {
+        "question": "What peak concurrent user count must the modernized application support?",
+        "criticality": "HIGH",
+        "subject": "concurrency",
+        "basis": "concurrency was not stated in the customer input.",
+        "sources": [
+          {
+            "sectionOrdinal": 1,
+            "excerpt": "Modernize Atlas to reduce manual order handling.",
+            "relation": "CONTEXT"
+          }
+        ],
+        "requirementRefs": [
+          5
+        ],
+        "assumptionRefs": [
+          0
+        ]
+      }
+    ],
+    "context": [
+      {
+        "topic": "OBJECTIVES",
+        "text": "Modernize Atlas to reduce manual order handling.",
+        "origin": "CUSTOMER_STATED",
+        "sources": [
+          {
+            "sectionOrdinal": 1,
+            "excerpt": "Modernize Atlas to reduce manual order handling.",
+            "relation": "DIRECT"
+          }
+        ],
+        "requirementRefs": [
+          0
+        ],
+        "facts": []
+      },
+      {
+        "topic": "SYSTEMS",
+        "text": "Modernize Atlas to reduce manual order handling.",
+        "origin": "CUSTOMER_STATED",
+        "sources": [
+          {
+            "sectionOrdinal": 1,
+            "excerpt": "Modernize Atlas to reduce manual order handling.",
+            "relation": "DIRECT"
+          }
+        ],
+        "requirementRefs": [
+          0
+        ],
+        "facts": [
+          {
+            "subject": "existingApplication",
+            "value": "Atlas",
+            "requirementRefs": [
+              0
+            ]
+          }
+        ]
+      },
+      {
+        "topic": "PERSONAS",
+        "text": "Operations staff need to create and track orders.",
+        "origin": "CUSTOMER_STATED",
+        "sources": [
+          {
+            "sectionOrdinal": 2,
+            "excerpt": "Operations staff need to create and track orders.",
+            "relation": "DIRECT"
+          }
+        ],
+        "requirementRefs": [
+          1
+        ],
+        "facts": [
+          {
+            "subject": "workflow",
+            "value": "order tracking",
+            "requirementRefs": [
+              1
+            ]
+          }
+        ]
+      },
+      {
+        "topic": "MISSING_INFORMATION",
+        "text": "concurrency was not stated in the customer input.",
+        "origin": "AI_INFERRED",
+        "sources": [
+          {
+            "sectionOrdinal": 1,
+            "excerpt": "Modernize Atlas to reduce manual order handling.",
+            "relation": "CONTEXT"
+          }
+        ],
+        "requirementRefs": [
+          5
+        ],
+        "facts": []
+      },
+      {
+        "topic": "RISKS",
+        "text": "Unresolved concurrency may change scope; seek customer validation.",
+        "origin": "AI_INFERRED",
+        "sources": [
+          {
+            "sectionOrdinal": 1,
+            "excerpt": "Modernize Atlas to reduce manual order handling.",
+            "relation": "CONTEXT"
+          }
+        ],
+        "requirementRefs": [
+          5
+        ],
+        "facts": []
+      }
+    ]
+  }
+}

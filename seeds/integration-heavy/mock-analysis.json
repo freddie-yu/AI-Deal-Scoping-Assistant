@@ -1,0 +1,235 @@
+{
+  "fingerprint": "10b9d4e982cf80d8ff0b4b1150b9fdede145da7dff49e7b79cdd350c1c8305e0",
+  "analysis": {
+    "kind": "Analysis",
+    "requirements": [
+      {
+        "type": "BR",
+        "description": "Reduce duplicate customer entry across sales and fulfilment.",
+        "priority": "HIGH",
+        "origin": "CUSTOMER_STATED",
+        "basis": "Exact customer statement.",
+        "evidence": [
+          {
+            "sectionOrdinal": 1,
+            "excerpt": "Reduce duplicate customer entry across sales and fulfilment.",
+            "relation": "DIRECT"
+          }
+        ],
+        "dependencyRefs": [],
+        "assumptionRefs": [],
+        "questionRefs": []
+      },
+      {
+        "type": "INT",
+        "description": "Existing CRM is Salesforce.",
+        "priority": "MEDIUM",
+        "origin": "CUSTOMER_STATED",
+        "basis": "Exact customer statement.",
+        "evidence": [
+          {
+            "sectionOrdinal": 2,
+            "excerpt": "Existing CRM is Salesforce.",
+            "relation": "DIRECT"
+          }
+        ],
+        "dependencyRefs": [],
+        "assumptionRefs": [],
+        "questionRefs": []
+      },
+      {
+        "type": "INT",
+        "description": "Synchronize approved orders with the warehouse API.",
+        "priority": "MEDIUM",
+        "origin": "CUSTOMER_STATED",
+        "basis": "Exact customer statement.",
+        "evidence": [
+          {
+            "sectionOrdinal": 3,
+            "excerpt": "Synchronize approved orders with the warehouse API.",
+            "relation": "DIRECT"
+          }
+        ],
+        "dependencyRefs": [],
+        "assumptionRefs": [],
+        "questionRefs": []
+      },
+      {
+        "type": "DATA",
+        "description": "Retain failed synchronization records for operator review.",
+        "priority": "MEDIUM",
+        "origin": "CUSTOMER_STATED",
+        "basis": "Exact customer statement.",
+        "evidence": [
+          {
+            "sectionOrdinal": 4,
+            "excerpt": "Retain failed synchronization records for operator review.",
+            "relation": "DIRECT"
+          }
+        ],
+        "dependencyRefs": [],
+        "assumptionRefs": [],
+        "questionRefs": []
+      },
+      {
+        "type": "FR",
+        "description": "Operators should be able to retry a failed synchronization.",
+        "priority": "MEDIUM",
+        "origin": "AI_INFERRED",
+        "basis": "Interpretation of the Salesforce order synchronization objective; the proposed detail was not explicitly stated.",
+        "evidence": [
+          {
+            "sectionOrdinal": 1,
+            "excerpt": "Reduce duplicate customer entry across sales and fulfilment.",
+            "relation": "CONTEXT"
+          }
+        ],
+        "dependencyRefs": [
+          0
+        ],
+        "assumptionRefs": [
+          0
+        ],
+        "questionRefs": [
+          0
+        ]
+      }
+    ],
+    "assumptions": [
+      {
+        "statement": "A named operations reviewer will validate synchronization outcomes.",
+        "basis": "The owner of synchronization acceptance was not stated; confirmation is required.",
+        "sources": [
+          {
+            "sectionOrdinal": 1,
+            "excerpt": "Reduce duplicate customer entry across sales and fulfilment.",
+            "relation": "CONTEXT"
+          }
+        ],
+        "requirementRefs": [
+          4
+        ],
+        "validation": "PROVISIONAL"
+      }
+    ],
+    "questions": [
+      {
+        "question": "Is a warehouse API sandbox and its access documentation available?",
+        "criticality": "HIGH",
+        "subject": "apiReadiness",
+        "basis": "apiReadiness was not stated in the customer input.",
+        "sources": [
+          {
+            "sectionOrdinal": 1,
+            "excerpt": "Reduce duplicate customer entry across sales and fulfilment.",
+            "relation": "CONTEXT"
+          }
+        ],
+        "requirementRefs": [
+          4
+        ],
+        "assumptionRefs": [
+          0
+        ]
+      }
+    ],
+    "context": [
+      {
+        "topic": "OBJECTIVES",
+        "text": "Reduce duplicate customer entry across sales and fulfilment.",
+        "origin": "CUSTOMER_STATED",
+        "sources": [
+          {
+            "sectionOrdinal": 1,
+            "excerpt": "Reduce duplicate customer entry across sales and fulfilment.",
+            "relation": "DIRECT"
+          }
+        ],
+        "requirementRefs": [
+          0
+        ],
+        "facts": []
+      },
+      {
+        "topic": "SYSTEMS",
+        "text": "Existing CRM is Salesforce.",
+        "origin": "CUSTOMER_STATED",
+        "sources": [
+          {
+            "sectionOrdinal": 2,
+            "excerpt": "Existing CRM is Salesforce.",
+            "relation": "DIRECT"
+          }
+        ],
+        "requirementRefs": [
+          1
+        ],
+        "facts": [
+          {
+            "subject": "existingCRM",
+            "value": "Salesforce",
+            "requirementRefs": [
+              1
+            ]
+          }
+        ]
+      },
+      {
+        "topic": "PERSONAS",
+        "text": "Synchronize approved orders with the warehouse API.",
+        "origin": "CUSTOMER_STATED",
+        "sources": [
+          {
+            "sectionOrdinal": 3,
+            "excerpt": "Synchronize approved orders with the warehouse API.",
+            "relation": "DIRECT"
+          }
+        ],
+        "requirementRefs": [
+          2
+        ],
+        "facts": [
+          {
+            "subject": "workflow",
+            "value": "order synchronization",
+            "requirementRefs": [
+              2
+            ]
+          }
+        ]
+      },
+      {
+        "topic": "MISSING_INFORMATION",
+        "text": "apiReadiness was not stated in the customer input.",
+        "origin": "AI_INFERRED",
+        "sources": [
+          {
+            "sectionOrdinal": 1,
+            "excerpt": "Reduce duplicate customer entry across sales and fulfilment.",
+            "relation": "CONTEXT"
+          }
+        ],
+        "requirementRefs": [
+          4
+        ],
+        "facts": []
+      },
+      {
+        "topic": "RISKS",
+        "text": "Unresolved apiReadiness may change scope; seek customer validation.",
+        "origin": "AI_INFERRED",
+        "sources": [
+          {
+            "sectionOrdinal": 1,
+            "excerpt": "Reduce duplicate customer entry across sales and fulfilment.",
+            "relation": "CONTEXT"
+          }
+        ],
+        "requirementRefs": [
+          4
+        ],
+        "facts": []
+      }
+    ]
+  }
+}

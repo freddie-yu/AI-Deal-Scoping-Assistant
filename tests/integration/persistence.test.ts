@@ -1,0 +1,50 @@
+import { afterEach, beforeEach, expect, it } from 'vitest';
+import { mkdtemp, readFile, writeFile, rm, mkdir } from 'node:fs/promises';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { JsonSessionRepository } from '../../src/persistence/json-repository.js';
+import { newSession } from '../../src/application/sessions.js';
+let directory: string;
+beforeEach(async () => { directory = await mkdtemp(join(tmpdir(), 'scoping-test-')); });
+afterEach(async () => { await rm(directory, { recursive: true, force: true }); });
+it('creates, loads, saves with revision checks and retains the previous snapshot', async () => {
+  const repo = new JsonSessionRepository(directory);
+  const first = newSession({ customerName: 'Example', opportunityName: 'Round trip' });
+  await repo.create(first);
+  expect(await repo.load(first.id)).toEqual(first);
+  const next = { ...first, revision: 2 };
+  await repo.save(next, 1);
+  expect(await repo.load(first.id)).toEqual(next);
+  expect(JSON.parse(await readFile(join(directory, `${first.id}.previous.json`), 'utf8'))).toEqual(first);
+  await expect(repo.save(next, 1)).rejects.toMatchObject({ code: 'CONFLICT' });
+});
+it('rejects invalid JSON/schema and unsafe identifiers safely', async () => {
+  const repo = new JsonSessionRepository(directory);
+  const session = newSession({ customerName: 'Example', opportunityName: 'Corruption' });
+  await repo.create(session);
+  const file = join(directory, `${session.id}.json`);
+  await writeFile(file, '{broken');
+  await expect(repo.load(session.id)).rejects.toMatchObject({ code: 'PERSISTENCE_ERROR' });
+  await writeFile(file, '{}');
+  await expect(repo.load(session.id)).rejects.toMatchObject({ code: 'PERSISTENCE_ERROR' });
+  await expect(repo.load('../escape')).rejects.toMatchObject({ code: 'VALIDATION_ERROR' });
+});
+it('rejects a valid aggregate stored under the wrong session filename', async () => {
+  const repo = new JsonSessionRepository(directory);
+  const first = newSession({ customerName: 'A', opportunityName: 'A' });
+  const second = newSession({ customerName: 'B', opportunityName: 'B' });
+  await repo.create(first);
+  await writeFile(join(directory, `${first.id}.json`), JSON.stringify(second));
+  await expect(repo.load(first.id)).rejects.toMatchObject({ code: 'PERSISTENCE_ERROR' });
+});
+it('serializes competing saves and preserves valid state on a failed replacement', async () => {
+  const repo = new JsonSessionRepository(directory);
+  const session = newSession({ customerName: 'Example', opportunityName: 'Concurrent' });
+  await repo.create(session);
+  const results = await Promise.allSettled([repo.save({ ...session, revision: 2 }, 1), repo.save({ ...session, revision: 2 }, 1)]);
+  expect(results.filter(r => r.status === 'fulfilled')).toHaveLength(1);
+  await rm(join(directory, `${session.id}.previous.json`));
+  await mkdir(join(directory, `${session.id}.previous.json`));
+  await expect(repo.save({ ...session, revision: 3 }, 2)).rejects.toMatchObject({ code: 'PERSISTENCE_ERROR' });
+  expect((await repo.load(session.id)).revision).toBe(2);
+});
