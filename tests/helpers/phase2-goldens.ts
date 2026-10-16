@@ -5,7 +5,7 @@ import { unsupportedAdditions } from '../../src/traceability/coverage.js';
 import { technologyChecks } from '../../src/validation/deliverables.js';
 export function assertPhase2Goldens(s: ScopingSession, seed: Awaited<ReturnType<typeof loadSeed>>) {
   const e = seed.phase2Expectations!; expect(e).toBeDefined();
-  const sections = Object.values(s.artifactSections).filter(a => a.review === 'REVIEWED' && s.artifacts[a.artifactId]?.kind !== 'ANALYSIS');
+  const sections = Object.values(s.artifactSections).filter(a => a.review === 'REVIEWED' && s.artifacts[a.artifactId]?.kind !== 'ANALYSIS' && !['EstimationUnit', 'EstimateItem', 'EstimateSummary', 'Composite'].includes(a.payload.kind));
   const requirements = Object.values(s.requirements).filter(r => r.lifecycle === 'ACTIVE');
   const resolve = (source: string) => { const r = requirements.find(r => r.evidence.some(a => a.excerpt.includes(source))); expect(r, `Missing source ${source}`).toBeDefined(); return r!.id; };
   const caps = sections.filter(a => a.payload.kind === 'Capability');
@@ -32,3 +32,4 @@ export function assertPhase2Goldens(s: ScopingSession, seed: Awaited<ReturnType<
     if (constraint === 'NO_UNGROUNDED_RECOMMENDATIONS') expect(unsupportedAdditions(s, sections)).toEqual([]);
   }
 }
+

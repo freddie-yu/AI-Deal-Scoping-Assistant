@@ -22,9 +22,12 @@ export const ValidationIssueSchema = z.object({ key: text, ruleId: text, ruleVer
 const stage = z.object({ coveredIds: z.array(ids.Requirement), uncoveredIds: z.array(ids.Requirement) }).strict();
 export const CoverageSchema = z.object({ evaluatedRevision: revision, eligibleRequirementIds: z.array(ids.Requirement), scope: stage, design: stage, delivery: stage, excluded: z.array(z.object({ id: ids.Requirement, reason: text }).strict()), highPriority: z.object({ eligible: counter, covered: counter }).strict() }).strict();
 export const QualityGateSchema = z.object({ id: z.string().regex(/^GATE_\d{2,}$/), evaluatedRevision: revision, ruleVersion: text, issues: z.array(ValidationIssueSchema), coverage: CoverageSchema, compatibilityResults: z.array(CompatibilityResultSchema), status: z.enum(['PASS', 'REVIEW_REQUIRED', 'BLOCKED']), acknowledgment: z.object({ revision, findingsHash: text, timestamp: z.iso.datetime() }).strict().optional() }).strict();
-export const ExportReceiptSchema = z.object({ id: text, revision, templateVersion: text, disclaimerVersion: text, gateId: text, findingsHash: text, timestamp: z.iso.datetime(), fileHash: text }).strict();
+export const ExportReceiptSchema = z.object({ id: text, revision, templateVersion: text, disclaimerVersion: text, gateId: text, findingsHash: text, timestamp: z.iso.datetime(), fileHash: text, snapshotHash: text.optional(), gateRuleVersion: text.optional(), sectionRevisions: z.array(z.object({ id: ids.ArtifactSection, revision }).strict()).optional(), estimationRuleSet: z.object({ kind: z.literal('RULESET'), id: text, version: text, hash: text }).strict().optional(), acknowledgment: QualityGateSchema.shape.acknowledgment }).strict();
 export type DependencyEdge = z.infer<typeof DependencyEdgeSchema>;
 export type ChangeSet = z.infer<typeof ChangeSetSchema>;
 export type ImpactResult = z.infer<typeof ImpactResultSchema>;
 export type ValidationIssue = z.infer<typeof ValidationIssueSchema>;
 export type QualityGate = z.infer<typeof QualityGateSchema>;
+
+export const ControlledChangeSchema = z.object({ impact: ImpactResultSchema, updatedSectionIds: z.array(ids.ArtifactSection), evaluatedRevision: revision }).strict();
+

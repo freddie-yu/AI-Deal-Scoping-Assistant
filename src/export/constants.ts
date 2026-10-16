@@ -1,0 +1,5 @@
+export const TEMPLATE_VERSION = 'scoping-markdown-v1';
+export const DISCLAIMER_VERSION = 'official-planning-v1';
+export const DISCLAIMER = 'This document is an AI-assisted internal planning output based on customer requirements and stated assumptions. It requires review and validation by qualified sales, architecture, delivery, security, and commercial stakeholders. It is not a final quote, contractual commitment, or delivery guarantee.';
+export const SECTION_TITLES = ['Executive Summary', 'Customer Objectives', 'Requirement Summary', 'PRD', 'Functional Scope / Capabilities', 'Solution Architecture', 'Architecture Diagram', 'Data Strategy', 'Integration Architecture', 'AI Solution Approach', 'Recommended Technologies / Frameworks', 'Delivery Phases / Workstreams', 'Effort and Timeline Estimate', 'ROM Commercials', 'Assumptions', 'Risks', 'Dependencies', 'Open Questions', 'Requirement Coverage', 'Traceability', 'Change-Impact Summary', 'Quality Findings / Human Validation Items', 'Required Disclaimer'] as const;
+

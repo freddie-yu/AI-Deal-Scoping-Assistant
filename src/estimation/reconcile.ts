@@ -59,10 +59,10 @@ export function reconcileUnits(input: ScopingSession): ScopingSession {
     const p = u.payload;
     if (p.source.kind === 'ENVIRONMENT' || p.source.kind === 'MIGRATION_PACKAGE') {
       if (p.source.scopeRefs.some(id => !s.artifactSections[id] || s.artifactSections[id]!.lifecycle === 'RETIRED')) include(u, false, 'Source boundary retired');
-      else include(u, p.inclusion.state === 'KNOWN' ? p.inclusion.value === 'INCLUDED' : null);
+      else include(u, p.inclusion.state === 'KNOWN' ? p.inclusion.value === 'INCLUDED' : null, p.exclusionReason ?? 'Source is excluded or retired');
       u.grounding = grounding(s, p.source.scopeRefs);
     }
-    if (p.unitType === 'SECURITY') include(u, p.inclusion.state === 'KNOWN' ? p.inclusion.value === 'INCLUDED' : null);
+    if (p.unitType === 'SECURITY') include(u, p.inclusion.state === 'KNOWN' ? p.inclusion.value === 'INCLUDED' : null, p.exclusionReason ?? 'Source is excluded or retired');
   }
   for (const a of units(s)) if (a.lifecycle === 'RETIRED') include(a, false, 'Canonical activity retired; identity remains reserved');
   const primary = units(s).filter(a => PRIMARY.includes(a.payload.unitType));
@@ -108,3 +108,4 @@ export function reviewUnits(input: ScopingSession, now: string) {
   for (const a of units(s)) { a.review = 'REVIEWED'; a.reviewedRevision = a.revision; a.reviewedAt = now; }
   return s;
 }
+

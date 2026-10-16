@@ -1,3 +1,4 @@
+import { retainControlledChange } from '../impact/history.js';
 import { mkdir, readFile, writeFile, rename, rm } from 'node:fs/promises';
 import { join, resolve } from 'node:path';
 import { randomUUID } from 'node:crypto';
@@ -41,6 +42,7 @@ export class JsonSessionRepository implements SessionRepository {
     return parsed.data;
   }
   private async replace(session: ScopingSession, previous?: ScopingSession) {
+    if (previous?.exportReceipts?.some((r, i) => JSON.stringify(r) !== JSON.stringify(session.exportReceipts?.[i]))) throw new ValidationError('Export receipts are immutable.');
     const temporary = this.path(session.id, `.${randomUUID()}.tmp`);
     const backupTemporary = this.path(session.id, `.${randomUUID()}.previous.tmp`);
     try {
@@ -67,7 +69,7 @@ export class JsonSessionRepository implements SessionRepository {
     return this.serialize(valid.id, async () => {
       const previous = await this.load(valid.id);
       if (previous.revision !== expectedRevision || valid.revision !== expectedRevision + 1 || valid.operationalRevision !== previous.operationalRevision) throw new ConflictError();
-      validateImmutableSources(previous, valid);
+      validateImmutableSources(previous, valid); retainControlledChange(previous, valid);
       await this.replace(valid, previous);
     });
   }
@@ -84,8 +86,9 @@ export class JsonSessionRepository implements SessionRepository {
       if (previous.revision !== expectedRevision) throw new ConflictError();
       const next = structuredClone(previous); update(next); next.operationalRevision++;
       if (next.revision !== previous.revision) throw new ConflictError();
-      const valid = this.validate(next); validateImmutableSources(previous, valid);
+      const valid = this.validate(next); validateImmutableSources(previous, valid); retainControlledChange(previous, valid);
       await this.replace(valid, previous); return valid;
     });
   }
 }
+

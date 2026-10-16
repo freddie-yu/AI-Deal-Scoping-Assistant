@@ -1,6 +1,6 @@
 # AI Deal Scoping Assistant
 
-Phase 4 controlled change, selective updates and deterministic quality validation for the Topcoder AI Deal Scoping Assistant. This is **not the completed challenge submission**. Final package and export work belongs to Phase 5.
+A local, single-user solution-scoping workspace for the Topcoder AI Deal Scoping Assistant. Phase 5 completes the evaluator flow through current QualityGate, a 23-section integrated package, deterministic Markdown preview/download and immutable export receipts. AWS-only, clearly labeled MOCK-only; no paid AI or external runtime service.
 
 Implemented: exact text/Markdown ingestion, immutable source versions and sections, four substantive MOCK analyses, canonical requirements/assumptions/questions, source inspection, explicit edits and review, scope approval fingerprints, and downstream eligibility. Phase 2 adds structured PRD/capabilities, coverage, AWS architecture and Mermaid diagrams, coordinated data/integration/AI strategies, non-numeric delivery workstreams, and individual proposal acceptance. Phase 3 adds reviewed canonical EstimationUnits, exact effort/role arithmetic, capacity-based schedules and dated milestones, configurable rates/currency/contingency, deterministic confidence and inspectable ledgers. The Phase 0/1/2 storage, provider, source and review boundaries are retained.
 
@@ -24,7 +24,7 @@ npm run start
 
 Open http://127.0.0.1:3001. Stop with Ctrl+C. Production serves the built frontend and API from the same origin. Keep `seeds/` alongside the application; mock fixtures load from this repository directory.
 
-In Requirements, select a scenario and **Start seed session**, then **Analyze with MOCK**. Inspect a requirement to see its exact customer quote, original section, provenance and basis. Review each requirement, assumption and question, then **Approve reviewed scope**. Open questions may be reviewed as unresolved and remain visible after approval. Continue through PRD & Scope, Architecture, and Data / Integration / AI. Generate proposals, inspect their grounding, and accept sections individually in displayed dependency order. In Estimate, accept delivery workstreams, prepare the estimation proposals, inspect drivers/configuration, accept the reviewed estimation basis, then calculate. Open Quality / Final Package to inspect change impact and run the quality gate. The final package/export portion is explicitly reserved for Phase 5.
+In Requirements, select a scenario and **Start seed session**, then **Analyze with MOCK**. Inspect a requirement to see its exact customer quote, original section, provenance and basis. Review each requirement, assumption and question, then **Approve reviewed scope**. Open questions may be reviewed as unresolved and remain visible after approval. Continue through PRD & Scope, Architecture, and Data / Integration / AI. Generate proposals, inspect their grounding, and accept sections individually in displayed dependency order. In Estimate, accept delivery workstreams, prepare the estimation proposals, inspect drivers/configuration, accept the reviewed estimation basis, then calculate. Open Quality / Final Package to inspect change impact and run the quality gate. Inspect the Final Package sections, review unresolved warnings, explicitly acknowledge them when permitted, and download Markdown. BLOCKED findings must be repaired; edits require a fresh gate/package.
 
 Alternatively, create an empty session with customer/opportunity names and paste text or Markdown. Saving always preserves the exact input; arbitrary input outside the four recorded fixtures returns an honest unsupported-MOCK message on analysis. Starting a seed creates a separate session and preserves your earlier work. Copy a session ID to load it later. Reloading restores the last loaded session using its ID in browser localStorage.
 
@@ -76,7 +76,7 @@ Vitest includes all 22 original Phase 0 tests plus source sectioning/UTF-16 offs
 | `src/architecture/`, `src/traceability/` | AWS catalog, compatibility, deterministic diagram source and scope coverage |
 | `src/estimation/` | Canonical reconciliation, exact arithmetic, configuration, scheduling, confidence and calculation ledgers |
 | `src/impact/`, `src/quality/` | Field diffs, reverse dependency traversal, freshness, stage coverage and deterministic quality gate |
-| `src/export/` | Type-only Phase 5 boundary; no package or export implementation |
+| `src/export/` | Reference-based package assembly, versioned disclaimer and deterministic safe Markdown |
 | `tests/` | Unit, API/persistence/provider integration, semantic goldens and browser journeys |
 
 Domain schemas have no filesystem, UI or provider dependencies. Routes call application commands. Providers return `unknown`, never mutate sessions, and expose provider/mode metadata. `validateProposal` validates structure before source/reference hooks; only then does application code canonicalize draft scope. The existing analysis Narrative payload has optional typed facts for finite golden selectors; requirements have an explicit basis, and questions have optional subject/basis/source context. These extend the existing records without a parallel fact store.
@@ -205,9 +205,29 @@ Additional API routes (writes include `expectedRevision`):
 
 See [Phase 4 validation](docs/phase-4-validation.md) for exact regression evidence, preservation checks and command results.
 
-## Not implemented
+## Final package and export integrity
 
-Final package assembly, Markdown export, export receipt, other export formats and demo video are not implemented. There is no upload/OCR/PDF/DOCX path or live AI. MOCK analysis supports exact seed source fingerprints; selective regeneration supports the recorded change variants. Arbitrary unsupported edits are saved for review but cannot invoke arbitrary generative AI.
+The package has a fixed order: executive summary; objectives; requirement summary; PRD; functional scope; architecture; diagram; data; integrations; AI; technologies/frameworks; delivery; effort/timeline; ROM; assumptions; risks; dependencies; questions; coverage; traceability; change impact; quality/human validation; disclaimer.
+
+Canonical ArtifactSections remain the editable truth. The package references current reviewed sections and renders them deterministically without a final provider rewrite. Estimates, dates, milestones and commercials come from the Phase 3 ledger; no generated numeric summary or cloud cost replaces them. Markdown includes Mermaid source plus readable component and connection tables.
+
+- PASS: export allowed, subject to stakeholder review.
+- REVIEW_REQUIRED: check the explicit warning acknowledgment and confirm it for this revision/findings. All warnings remain in the package.
+- BLOCKED: export is disabled and the server rejects it with the blocking reasons. Acknowledgment cannot override errors.
+
+The preview and downloaded bytes share one renderer. A snapshot token binds domain revision, gate ID/rule version/findings hash, referenced section revisions, estimation ruleset, template/disclaimer versions and exact content hash. The server reruns existing validators within the serialized export transaction. Domain edits, relevant operational changes or obsolete content require a fresh preview; no mixed revision export is possible.
+
+Each export adds an immutable receipt to the session's operational history. It includes a unique ID, timestamp, revision, gate/version/findings, template/disclaimer versions, section/rules basis, acknowledgment where applicable, and SHA-256 of the exact UTF-8 downloaded bytes. Receipts contain no duplicate editable document. Repeated unchanged exports have identical content/hash but separate receipt IDs. Later edits preserve historical receipts. A receipt records export issuance; it cannot prove a browser download was retained.
+
+API: GET /api/sessions/:id/package; POST /package/acknowledge with expectedRevision, snapshotHash and confirmed:true; POST /package/export with expectedRevision and snapshotHash. Download responses use text/markdown, an application-owned sanitized filename, X-Export-Receipt-Id and X-Content-SHA256. Client paths/filenames are not accepted.
+
+Customer text is escaped in Markdown; preview uses React text nodes and a restricted template display without raw HTML. No document content is fed back into domain calculations. Downloads leave local storage at the user's chosen browser location; protect them as customer data. Default .data stores plaintext sessions, recovery snapshots and receipts; there is no encryption, authentication or multi-user isolation.
+
+Four seed families are verified through complete package creation and controlled changes. Uncalibrated demo assumptions, unknown readiness and remaining questions intentionally produce REVIEW_REQUIRED; tests never force seeded sessions to PASS. A separate calibrated test fixture verifies PASS semantics.
+
+## Known limitations
+
+Markdown is the supported export format. No upload/OCR/PDF/DOCX or live AI adapter is included. The demo script and deterministic browser evidence are prepared; a narrated demo-video file still needs recording for submission. MOCK analysis supports exact seed source fingerprints; selective regeneration supports the recorded change variants. Arbitrary unsupported edits are saved for review but cannot invoke arbitrary generative AI.
 
 ## Approved contracts
 
@@ -219,4 +239,5 @@ Authority order:
 4. [Data model](docs/data-model.md)
 5. [Deterministic estimation rules](docs/deterministic-estimation-rules.md)
 
-The official requirements file is an unchanged local copy of the supplied challenge document. Phases 0–4 implement the approved source, review, connected-artifact, deterministic-estimation and controlled-change contracts. Final submission/export work remains.
+The official requirements file is an unchanged local copy of the supplied challenge document. Phases 0–5 implement the approved source, review, connected-artifact, deterministic-estimation, controlled-change, quality and Markdown-export contracts. See [Phase 5 validation](docs/phase-5-validation.md), [submission architecture](docs/submission-architecture.md) and the [3–5 minute demo script](docs/demo-script.md).
+

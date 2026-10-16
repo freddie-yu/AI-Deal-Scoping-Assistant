@@ -47,8 +47,8 @@ function App() {
     finally { setBusy(false); }
   }
   return <div className="app">
-    <header><div><p className="eyebrow">PHASE 4 · CONTROLLED CHANGE &amp; QUALITY</p><h1>AI Deal Scoping Assistant</h1></div><span className="badge">MOCK</span></header>
-    <div className="context"><strong>{session?.context.opportunityName ?? 'Understand the customer need'}</strong><span role="status">{server} · {status}</span></div>
+    <header><div><p className="eyebrow">REVIEWED SCOPE · CONNECTED DELIVERABLES · MARKDOWN EXPORT</p><h1>AI Deal Scoping Assistant</h1></div><span className="badge">MOCK</span></header>
+    <p className="mock-note">MOCK uses seeded responses. Review, edits, impact, estimation, quality and export are real application logic. Unrecorded analysis is not fabricated.</p><div className="context"><strong>{session?.context.opportunityName ?? 'Understand the customer need'}</strong><span role="status">{server} · {status}</span></div>
     <div className="workspace"><nav aria-label="Workspace areas">{areas.map((name, i) => <button key={name} aria-current={area === name ? 'page' : undefined} onClick={() => setArea(name)}><span aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>{name}</button>)}</nav>
     <main><p className="eyebrow">WORKSPACE</p><h2>{area}</h2>{error && <p role="alert" className="error">{error}</p>}
     {area === 'Requirements' ? <>
@@ -59,7 +59,8 @@ function App() {
       {session && <><Requirements key={session.id} session={session} mutate={mutate} busy={busy} scope={scope} /><details className="metadata"><summary>Session metadata</summary><dl><dt>Customer</dt><dd>{session.context.customerName}</dd><dt>Opportunity</dt><dd>{session.context.opportunityName}</dd><dt>Session ID</dt><dd>{session.id}</dd><dt>Revision / schema</dt><dd>{session.revision} / {session.schemaVersion}</dd></dl></details></>}
     </> : session && area === 'Quality / Final Package' ? <Quality session={session} mutate={mutate} busy={busy} scope={scope} /> : session && area !== 'Quality / Final Package' ? <>{area === 'Estimate' && <Estimate session={session} mutate={mutate} busy={busy} scope={scope} />}<Deliverables key={area} area={area} session={session} mutate={mutate} busy={busy} scope={scope} /></> : <section className="placeholder"><h3>Start a session</h3><p>Load a seed or local session to review connected deliverables.</p></section>}
     {session?.lastImpact && area !== 'Quality / Final Package' && <section className="panel"><p>Change impact is available for revision {session.lastImpact.evaluatedRevision}. Unaffected reviewed content is preserved.</p><button onClick={() => setArea('Quality / Final Package')}>Review change impact</button></section>}
-    <footer><strong>Next action</strong><p>{!session ? 'Start a seed, create a session, or load an existing session ID.' : scope?.eligibility.eligible ? 'Generate PRD and scope, accept proposals, then review architecture and strategy.' : 'Save customer input, analyze, and review each requirement, assumption and question.'}</p></footer>
+    <footer><strong>Next action</strong><p>{!session ? 'Start a seed, create a session, or load an existing session ID.' : session.gate?.evaluatedRevision === session.revision ? 'Review Quality / Final Package, acknowledge unresolved warnings when permitted, then download Markdown.' : Object.values(session.artifactSections).some(a => a.payload.kind === 'EstimateSummary') ? 'Review coverage and change impact; update stale content, then run the quality gate.' : scope?.eligibility.eligible ? 'Generate and accept PRD, architecture, strategies and delivery; then prepare and review the estimate.' : 'Save customer input, analyze, and review each requirement, assumption and question.'}</p></footer>
     </main></div></div>;
 }
 createRoot(document.getElementById('root')!).render(<App />);
+

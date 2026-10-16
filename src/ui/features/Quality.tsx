@@ -1,3 +1,4 @@
+import { FinalPackage } from './FinalPackage.js';
 import React, { useCallback, useEffect, useState } from 'react';
 import type { ScopingSession, NodeRef, QualityGate } from '../../domain/index.js';
 import { api, type Mutate, type ScopeStatus } from '../api.js';
@@ -46,6 +47,7 @@ export function Quality(props: Props) {
     {selected && <section className="panel"><div className="row"><h3>Related content: {label(s, selected)}</h3><button onClick={() => setSelected(null)}>Close related content</button></div>{selected.kind === 'ArtifactSection' && s.artifactSections[selected.id] ? <ArtifactReview section={s.artifactSections[selected.id]!} session={s} pending={false} busy={busy} /> : <pre>{JSON.stringify(selected.kind === 'Requirement' ? s.requirements[selected.id] : selected.kind === 'Assumption' ? s.assumptions[selected.id] : selected.kind === 'Question' ? s.questions[selected.id] : selected.kind === 'CONFIGURATION' ? s.configuration.entries[selected.key] : selected, null, 2)}</pre>}</section>}
     <ChangeImpact {...props} />
     <section className="panel" id="selective-proposals" data-testid="selective-proposals"><h3>Before / after review</h3><p>Only acceptance replaces the selected section. Rejection retains the previous accepted stale content.</p>{!pending.length && <p>No pending selective proposals.</p>}{pending.map(({ run, section }) => <div className="replacement-review" key={`${run.id}-${section.id}`}><h4>{section.title} · {section.id}</h4><details><summary>Previous accepted content</summary>{s.artifactSections[section.id] && <ArtifactReview section={s.artifactSections[section.id]!} session={s} pending={false} busy={busy} />}</details><h5>Proposed replacement</h5><ArtifactReview section={section} session={s} pending busy={busy} accept={() => void act(`runs/${run.id}/sections/${section.id}/review`, { decision: 'ACCEPTED' })} reject={() => void act(`runs/${run.id}/sections/${section.id}/review`, { decision: 'REJECTED' })} /><details><summary>Change cause and affected path</summary>{s.lastImpact?.reasons.filter(r => r.node.kind === 'ArtifactSection' && r.node.id === section.id).map((r, i) => <p key={i}>{r.reason}<br />{r.path.map(n => label(s, n)).join(' → ')}</p>)}</details></div>)}</section>
-    <section className="panel"><h3>Final package / export: Phase 5</h3><p>Integrated package assembly and download are not available in Phase 4.</p></section>
+    <FinalPackage session={s} mutate={mutate} busy={busy} />
   </>;
 }
+

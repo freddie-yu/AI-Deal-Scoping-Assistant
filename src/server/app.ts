@@ -1,3 +1,4 @@
+import { ExportCommands } from '../application/export.js';
 import { DeliverableCommands } from '../application/deliverables.js';
 import { EstimationCommands } from '../application/estimation.js';
 import { ImpactCommands } from '../application/impact.js';
@@ -12,7 +13,7 @@ export function createApp(repository: SessionRepository) {
   const app = express(); const commands = new SessionCommands(repository); const scope = new ScopeCommands(repository); const deliverables = new DeliverableCommands(repository);
   const estimation = new EstimationCommands(repository);
   const impact = new ImpactCommands(repository);
-  const quality = new QualityCommands(repository);
+  const quality = new QualityCommands(repository); const exports = new ExportCommands(repository);
   app.disable('x-powered-by');
   app.use((req, res, next) => {
     const host = req.hostname;
@@ -25,7 +26,17 @@ export function createApp(repository: SessionRepository) {
     next();
   });
   app.use(express.json({ limit: '128kb' }));
-  app.get('/api/health', (_req, res) => { res.json({ status: 'ok', mode: 'MOCK', phase: 2 }); });
+  app.get('/api/sessions/:id/package', async (req, res) => { res.setHeader('Cache-Control', 'no-store'); res.json(await exports.preview(req.params.id)); });
+  app.post('/api/sessions/:id/package/acknowledge', async (req, res) => { res.json(await exports.acknowledge(req.params.id, req.body as unknown)); });
+  app.post('/api/sessions/:id/package/export', async (req, res) => {
+    const result = await exports.download(req.params.id, req.body as unknown);
+    res.setHeader('Cache-Control', 'no-store');
+    res.setHeader('Content-Disposition', 'attachment; filename="' + result.filename + '"');
+    res.setHeader('X-Export-Receipt-Id', result.receipt.id);
+    res.setHeader('X-Content-SHA256', result.receipt.fileHash);
+    res.type('text/markdown; charset=utf-8').send(Buffer.from(result.markdown, 'utf8'));
+  });
+  app.get('/api/health', (_req, res) => { res.json({ status: 'ok', mode: 'MOCK', phase: 5 }); });
   app.get('/api/seeds', async (_req, res) => { res.json(await commands.seeds()); });
   app.post('/api/sessions/seed', async (req, res) => { res.status(201).json(await commands.createSeed(req.body as unknown)); });
   app.post('/api/sessions', async (req, res) => { res.status(201).json(await commands.create(req.body as unknown)); });
@@ -64,3 +75,4 @@ export function createApp(repository: SessionRepository) {
   };
   app.use(errorHandler); return app;
 }
+

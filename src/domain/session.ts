@@ -3,7 +3,7 @@ import { ids, text, revision, counter, Collections, InputRefSchema, NodeRefSchem
 import { SourceDocumentSchema, SourceSectionSchema, RequirementSchema, AssumptionSchema, ClarificationQuestionSchema } from './scope.js';
 import { ArtifactSchema, ArtifactSectionSchema } from './artifacts.js';
 import { ConfigurationSchema } from './configuration.js';
-import { ChangeSetSchema, ImpactResultSchema, QualityGateSchema, ExportReceiptSchema } from './operations.js';
+import { ChangeSetSchema, ImpactResultSchema, QualityGateSchema, ExportReceiptSchema, ControlledChangeSchema } from './operations.js';
 export const OperationSchema = z.enum(['analyze', 'prd-scope', 'architecture', 'strategies', 'delivery', 'estimate', 'impact-explanation']);
 export const ValidatedRecordSchema = z.discriminatedUnion('kind', [
   z.object({ kind: z.literal('Requirement'), record: RequirementSchema }).strict(),
@@ -29,7 +29,7 @@ export const ScopingSessionSchema = z.object({
   activeSourceIds: z.array(ids.SourceDocument), collectionCounters: z.record(Collections, counter),
   documents: keyed(SourceDocumentSchema), sourceSections: keyed(SourceSectionSchema), requirements: keyed(RequirementSchema), assumptions: keyed(AssumptionSchema), questions: keyed(ClarificationQuestionSchema), artifacts: keyed(ArtifactSchema), artifactSections: keyed(ArtifactSectionSchema), generationRuns: keyed(GenerationRunSchema), configuration: ConfigurationSchema,
   scopeReviewFingerprint: text.nullable(),
-  pendingChanges: z.array(ChangeSetSchema).optional(), lastImpact: ImpactResultSchema.optional(), gate: QualityGateSchema.optional(), exportReceipt: ExportReceiptSchema.optional(),
+  pendingChanges: z.array(ChangeSetSchema).optional(), lastImpact: ImpactResultSchema.optional(), gate: QualityGateSchema.optional(), exportReceipt: ExportReceiptSchema.optional(), exportReceipts: z.array(ExportReceiptSchema).optional(), controlledChange: ControlledChangeSchema.optional(),
 }).strict().superRefine((v, ctx) => {
   for (const name of Collections.options) {
     for (const [key, record] of Object.entries(v[name])) {
@@ -62,3 +62,4 @@ export const ScopingSessionSchema = z.object({
 export type ScopingSession = z.infer<typeof ScopingSessionSchema>;
 export type GenerationRun = z.infer<typeof GenerationRunSchema>;
 export type Operation = z.infer<typeof OperationSchema>;
+

@@ -11,3 +11,18 @@ textarea,select{font:inherit;max-width:100%;width:100%;border:1px solid #aab8cb;
 .change-values code { white-space: normal; overflow-wrap: anywhere; }
 .quality-finding .actions { flex-wrap: wrap; }
 @media (max-width: 700px) { .impact-columns { grid-template-columns: minmax(0, 1fr); } }
+.final-package { min-width: 0; }
+.package-section-select { display: block; margin: 1.2rem 0; }
+.package-section-select select { width: 100%; max-width: 100%; }
+.package-preview { border-top: 1px solid #d6dfeb; padding-top: 1rem; }
+.package-markdown { overflow-wrap: anywhere; }
+.package-markdown table { min-width: 650px; }
+.package-markdown .table-scroll { max-height: 36rem; overflow: auto; }
+.package-source { white-space: pre-wrap; overflow-wrap: anywhere; max-height: 36rem; overflow: auto; font-size: .82rem; }
+.package-code pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+.final-package code { overflow-wrap: anywhere; }
+.export-ack { margin: 1rem 0; padding: 1rem; background: #fff7e3; }
+.export-ack input { width: auto; margin-right: .5rem; }
+.disclaimer { border-left: 3px solid #60758c; padding: 1rem; margin-top: 1.5rem; background: #f1f5f9; }
+.mock-note { margin: 0; padding: .6rem 1.5rem; background: #eaf1fb; color: #294365; font-size: .85rem; }
+@media(max-width: 600px) { .package-markdown table { min-width: 560px; } .export-ack { padding: .7rem; } }

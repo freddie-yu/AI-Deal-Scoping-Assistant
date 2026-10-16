@@ -64,7 +64,7 @@ export class EstimationCommands {
     });
   }
   async reconcile(id: string, input: unknown) { const { expectedRevision } = parseCommand(command, input); return this.change(id, expectedRevision, reconcileUnits); }
-  async addBoundary(id: string, input: unknown) { const { expectedRevision, ...args } = parseCommand(boundary, input); return this.change(id, expectedRevision, s => addBoundary(s, args)); }
+  async addBoundary(id: string, input: unknown) { const { expectedRevision, ...args } = parseCommand(boundary, input); return this.change(id, expectedRevision, s => { const existing = new Set(Object.keys(s.artifactSections)); const next = addBoundary(s, args); for (const a of Object.values(next.artifactSections)) if (!existing.has(a.id) && a.payload.kind === 'EstimationUnit' && a.payload.unitType === args.unitType) a.lastChangedBy = 'HUMAN'; return next; }); }
   async review(id: string, input: unknown) {
     const { expectedRevision } = parseCommand(review, input);
     return this.change(id, expectedRevision, s => {
@@ -111,9 +111,10 @@ export class EstimationCommands {
         const p = a.payload.source; if (p.kind !== 'ENVIRONMENT' && p.kind !== 'MIGRATION_PACKAGE') throw new ValidationError('Only named boundaries can be edited here.');
         if (edit.name) { p.name = edit.name; a.title = edit.name; } if (edit.boundary) p.boundary = edit.boundary;
       }
-      a.revision++; a.review = 'PROPOSED'; delete a.reviewedAt; delete a.reviewedRevision;
+      a.lastChangedBy = 'HUMAN'; a.revision++; a.review = 'PROPOSED'; delete a.reviewedAt; delete a.reviewedRevision;
       return reconcileUnits(s);
     });
   }
   async read(id: string) { const s = await this.repository.load(id); return { ...estimateView(s), coverage: estimationCoverage(s), eligible: canGenerateDownstream(s).eligible }; }
 }
+
